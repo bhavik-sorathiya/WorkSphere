@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>WorkSphere - Knowledge Base</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@600;700&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface-variant": "#45474c",
+                        "secondary-fixed-dim": "#adc6ff",
+                        "tertiary": "#061525",
+                        "primary-fixed-dim": "#bcc7de",
+                        "surface-container": "#f0edef",
+                        "on-tertiary-fixed": "#0d1c2d",
+                        "inverse-on-surface": "#f3f0f2",
+                        "background": "#fbf8fa",
+                        "tertiary-container": "#1b2a3b",
+                        "surface-variant": "#e4e2e3",
+                        "error-container": "#ffdad6",
+                        "on-surface": "#1b1b1d",
+                        "on-error-container": "#93000a",
+                        "on-tertiary-fixed-variant": "#39485a",
+                        "on-tertiary-container": "#8291a6",
+                        "inverse-surface": "#303032",
+                        "primary-container": "#1e293b",
+                        "surface-bright": "#fbf8fa",
+                        "surface-container-highest": "#e4e2e3",
+                        "on-secondary-fixed": "#001a42",
+                        "surface": "#fbf8fa",
+                        "surface-container-low": "#f5f3f4",
+                        "on-primary-fixed-variant": "#3c475a",
+                        "surface-container-high": "#eae7e9",
+                        "tertiary-fixed": "#d4e4fa",
+                        "on-background": "#1b1b1d",
+                        "tertiary-fixed-dim": "#b9c8de",
+                        "secondary-container": "#2170e4",
+                        "on-tertiary": "#ffffff",
+                        "outline": "#75777d",
+                        "on-primary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "primary-fixed": "#d8e3fb",
+                        "on-secondary-container": "#fefcff",
+                        "surface-tint": "#545f73",
+                        "primary": "#091426",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-container": "#8590a6",
+                        "on-secondary-fixed-variant": "#004395",
+                        "outline-variant": "#c5c6cd",
+                        "on-primary-fixed": "#111c2d",
+                        "secondary-fixed": "#d8e2ff",
+                        "secondary": "#0058be",
+                        "error": "#ba1a1a",
+                        "inverse-primary": "#bcc7de",
+                        "surface-dim": "#dcd9db",
+                        "on-secondary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-desktop": "40px",
+                        "base": "8px",
+                        "margin-mobile": "16px",
+                        "gutter": "24px",
+                        "container-max": "1440px"
+                    },
+                    "fontFamily": {
+                        "body-sm": ["Inter"],
+                        "label-caps": ["JetBrains Mono"],
+                        "display-lg": ["Hanken Grotesk"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "headline-lg-mobile": ["Hanken Grotesk"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .icon-fill {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        /* Custom Scrollbar for Editor Area */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(117, 119, 125, 0.3);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(117, 119, 125, 0.5);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md overflow-hidden flex h-screen w-full selection:bg-secondary-fixed selection:text-on-secondary-fixed-variant">
+<!-- JSON Component: SideNavBar -->
+<aside class="hidden md:flex flex-col h-screen w-64 fixed left-0 top-0 bg-surface-container-low/80 backdrop-blur-xl shadow-md shadow-primary/5 p-4 gap-2 z-40 border-r border-outline-variant/20 transition-all duration-300">
+<!-- Header -->
+<div class="flex items-center gap-3 mb-8 px-2 mt-2">
+<div class="w-10 h-10 rounded-lg overflow-hidden flex-shrink-0 border border-outline-variant/30 shadow-sm">
+<img alt="Workspace logo" class="w-full h-full object-cover" data-alt="A sleek, modern corporate logo for 'Acme Corp' featuring a minimalist geometric shape in deep indigo and subtle silver accents, designed for a high-end enterprise software dashboard. The background is a clean, bright white." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCGGuzMexVIEs0DUyhtUnrGAt38MxdxyYSiF_YBO8qqHqn0AIvDlhi8ogXVMufXgSa_3srIA3AemsT8TTSVk8f5JdMKZVe6lHw69N7_w14rM25vvDuM8cQDESyGtQDn67ALNbI7GlXunD-ptkO-jP9tlCkCY7pdM2vbIUWFWlNHEMJmBqum8CE_9IKwJ9CvF7L9DuPIeTB2RjAxCng321y0hTXvNM0WTKXINzId7l5rJw8UfiYH2ojOUnMXjknMEeQzQTc9xAlYGIM"/>
+</div>
+<div class="flex flex-col">
+<span class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary tracking-tight leading-none">Acme Corp</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant mt-1">Enterprise Plan</span>
+</div>
+</div>
+<!-- Navigation Tabs -->
+<nav class="flex flex-col gap-1 flex-1">
+<!-- Inactive -->
+<a class="text-on-surface-variant hover:bg-surface-variant/50 flex items-center gap-3 p-3 rounded-lg transition-all duration-200 group" href="#">
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">home</span>
+<span class="font-label-caps text-label-caps tracking-wider">Home</span>
+</a>
+<!-- Inactive -->
+<a class="text-on-surface-variant hover:bg-surface-variant/50 flex items-center gap-3 p-3 rounded-lg transition-all duration-200 group" href="#">
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">dashboard</span>
+<span class="font-label-caps text-label-caps tracking-wider">Boards</span>
+</a>
+<!-- Inactive -->
+<a class="text-on-surface-variant hover:bg-surface-variant/50 flex items-center gap-3 p-3 rounded-lg transition-all duration-200 group" href="#">
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">chat</span>
+<span class="font-label-caps text-label-caps tracking-wider">Chat</span>
+</a>
+<!-- ACTIVE (Context: Knowledge Base Docs) -->
+<a class="bg-primary text-on-primary rounded-lg flex items-center gap-3 p-3 shadow-md shadow-primary/20 active:translate-x-1 transition-transform" href="#">
+<span class="material-symbols-outlined icon-fill">description</span>
+<span class="font-label-caps text-label-caps tracking-wider font-semibold">Docs</span>
+</a>
+<!-- Inactive -->
+<a class="text-on-surface-variant hover:bg-surface-variant/50 flex items-center gap-3 p-3 rounded-lg transition-all duration-200 group mt-auto" href="#">
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">settings</span>
+<span class="font-label-caps text-label-caps tracking-wider">Settings</span>
+</a>
+</nav>
+<!-- CTA -->
+<button class="mt-4 w-full py-3 px-4 rounded-lg border border-outline-variant/40 bg-surface text-primary font-label-caps text-label-caps hover:bg-surface-variant/50 transition-colors duration-200 flex items-center justify-center gap-2 shadow-sm">
+<span class="material-symbols-outlined text-[18px]">person_add</span>
+            Invite Members
+        </button>
+</aside>
+<!-- Main Workspace Container -->
+<div class="flex flex-col flex-1 h-screen w-full md:ml-64 bg-surface-container-lowest">
+<!-- JSON Component: TopNavBar -->
+<header class="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-base sticky top-0 z-30 bg-surface/80 backdrop-blur-xl shadow-sm border-b border-outline-variant/10">
+<!-- Left Side: Org Menu / Logo / Search -->
+<div class="flex items-center gap-6 flex-1">
+<!-- Mobile Menu Trigger -->
+<button class="md:hidden p-2 text-on-surface-variant hover:bg-surface-variant/50 rounded-full">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<!-- Brand / Org Menu -->
+<div class="hidden md:flex items-center gap-2 cursor-pointer group px-2 py-1 rounded-md hover:bg-surface-variant/40 transition-colors">
+<span class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary">WorkSphere</span>
+<span class="material-symbols-outlined text-on-surface-variant text-[20px] group-hover:text-primary transition-colors">expand_more</span>
+</div>
+<!-- Search Bar (on_left logic) -->
+<div class="relative w-full max-w-md hidden sm:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[20px]">search</span>
+<input class="w-full h-10 pl-10 pr-4 rounded-full bg-surface-container-low border border-outline-variant/30 text-body-sm font-body-sm text-on-surface focus:outline-none focus:ring-2 focus:ring-primary-fixed focus:border-transparent transition-shadow placeholder:text-outline/70 shadow-inner" placeholder="Search knowledge base..." type="text"/>
+<div class="absolute right-3 top-1/2 -translate-y-1/2 flex gap-1">
+<kbd class="hidden lg:inline-flex items-center justify-center px-1.5 py-0.5 rounded border border-outline-variant/40 bg-surface-container-lowest text-[10px] font-label-caps text-outline font-medium">⌘</kbd>
+<kbd class="hidden lg:inline-flex items-center justify-center px-1.5 py-0.5 rounded border border-outline-variant/40 bg-surface-container-lowest text-[10px] font-label-caps text-outline font-medium">K</kbd>
+</div>
+</div>
+</div>
+<!-- Right Side: Trailing Actions -->
+<div class="flex items-center gap-2 md:gap-4">
+<button class="hidden lg:flex items-center gap-2 px-3 py-1.5 text-on-surface-variant hover:text-primary hover:bg-surface-variant/50 rounded-md transition-colors font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-[20px]">help</span>
+                    Help
+                </button>
+<div class="h-6 w-px bg-outline-variant/30 hidden lg:block mx-1"></div>
+<button class="p-2 text-on-surface-variant hover:text-primary hover:bg-surface-variant/50 rounded-full transition-colors relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 rounded-full bg-error ring-2 ring-surface"></span>
+</button>
+<button class="hidden md:flex p-2 text-on-surface-variant hover:text-primary hover:bg-surface-variant/50 rounded-full transition-colors">
+<span class="material-symbols-outlined">apps</span>
+</button>
+<!-- Profile -->
+<button class="w-8 h-8 md:w-9 md:h-9 rounded-full overflow-hidden border-2 border-surface-variant hover:border-primary-fixed transition-colors ml-2 shadow-sm">
+<img alt="User profile photo" class="w-full h-full object-cover" data-alt="A professional headshot of a corporate employee in a brightly lit, modern office environment. The lighting is crisp and cool-toned, reflecting a high-end enterprise aesthetic. The individual looks confident and approachable." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDeLHYvraMCjhe75PMmx7piw4mNJc_Ivqnt0BzN87HXzptBQu7e_4Vm-43uHxlm99tMe5DpPZ4-2hLoSDiZC5INQlJYpPf7_obaWfNudl8ly1_kJ2A3Ph8-dbiENygL5FgKcgsLumW0kfASdgwwxlLcjOdmyQUOQLI-7Nr_yaSIYlOysC1MGsIYi2aHTxJLvSh1wcAJjDNJYblj2awfu5TptubTU8yc2Lj_8MbomkPC69pP8l-NRXhQ0qXVTnvksKQASZSnu42b85s"/>
+</button>
+</div>
+</header>
+<!-- Content Area: Two-Pane Layout (Folder Tree + Editor) -->
+<main class="flex flex-1 overflow-hidden">
+<!-- Middle Pane: Directory / Folder Structure -->
+<div class="hidden lg:flex flex-col w-[280px] bg-surface-container-low/30 border-r border-outline-variant/20 flex-shrink-0">
+<!-- Directory Header & Action -->
+<div class="p-4 flex items-center justify-between border-b border-outline-variant/10">
+<span class="font-label-caps text-label-caps font-bold text-on-surface-variant tracking-wider">Directory</span>
+<button class="flex items-center justify-center w-6 h-6 rounded bg-primary text-on-primary hover:bg-primary/90 transition-colors shadow-sm" title="New Document">
+<span class="material-symbols-outlined text-[16px]">add</span>
+</button>
+</div>
+<!-- Tree View -->
+<div class="flex-1 overflow-y-auto p-3 space-y-1">
+<!-- Expanded Folder: Eng -->
+<div class="flex flex-col gap-1">
+<button class="flex items-center gap-2 w-full px-2 py-1.5 rounded-md hover:bg-surface-variant/50 text-left transition-colors text-on-surface group">
+<span class="material-symbols-outlined text-[20px] text-primary-fixed-dim transition-transform group-hover:text-primary">folder_open</span>
+<span class="font-body-sm text-body-sm font-medium">Engineering</span>
+</button>
+<!-- Folder Contents -->
+<div class="pl-7 flex flex-col gap-1 border-l border-outline-variant/20 ml-4 my-1">
+<!-- Document -->
+<button class="flex items-center gap-2 w-full px-2 py-1.5 rounded-md hover:bg-surface-variant/50 text-left transition-colors text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px] text-outline">draft</span>
+<span class="font-body-sm text-body-sm truncate">API Guidelines</span>
+</button>
+<!-- ACTIVE Document -->
+<button class="flex items-center gap-2 w-full px-2 py-1.5 rounded-md bg-secondary-fixed/50 text-on-secondary-fixed-variant text-left transition-colors border border-secondary-fixed shadow-sm">
+<span class="material-symbols-outlined text-[18px] icon-fill text-secondary">article</span>
+<span class="font-body-sm text-body-sm font-medium truncate">Database Architecture</span>
+</button>
+</div>
+</div>
+<!-- Collapsed Folder: HR -->
+<div class="flex flex-col gap-1 mt-2">
+<button class="flex items-center gap-2 w-full px-2 py-1.5 rounded-md hover:bg-surface-variant/50 text-left transition-colors text-on-surface-variant group">
+<span class="material-symbols-outlined text-[20px] text-outline transition-transform group-hover:text-on-surface">folder</span>
+<span class="font-body-sm text-body-sm font-medium">Human Resources</span>
+</button>
+</div>
+</div>
+<!-- Bottom Action -->
+<div class="p-4 border-t border-outline-variant/10">
+<button class="w-full py-2 px-3 rounded-md border border-dashed border-outline-variant hover:border-primary hover:bg-surface-variant/30 text-on-surface-variant hover:text-primary font-body-sm text-body-sm flex items-center justify-center gap-2 transition-all">
+<span class="material-symbols-outlined text-[18px]">note_add</span>
+                        Create new doc
+                    </button>
+</div>
+</div>
+<!-- Right Pane: Editor Canvas -->
+<div class="flex flex-col flex-1 bg-surface-bright relative">
+<!-- Editor Toolbar -->
+<div class="flex items-center gap-1 px-4 py-3 border-b border-outline-variant/10 bg-surface/90 backdrop-blur-sm sticky top-0 z-10 flex-wrap">
+<!-- Breadcrumbs (Mobile/Tablet fallback Context) -->
+<div class="flex items-center gap-2 text-on-surface-variant mr-auto lg:hidden">
+<span class="font-body-sm text-body-sm">Engineering</span>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+<span class="font-body-sm text-body-sm font-medium text-on-surface truncate max-w-[150px]">Database Arch...</span>
+</div>
+<!-- Tools -->
+<div class="flex items-center gap-1 bg-surface-container-lowest p-1 rounded-md border border-outline-variant/20 shadow-sm ml-auto lg:ml-0">
+<button class="p-1.5 rounded hover:bg-surface-variant text-on-surface transition-colors" title="Bold">
+<span class="material-symbols-outlined text-[20px]">format_bold</span>
+</button>
+<button class="p-1.5 rounded hover:bg-surface-variant text-on-surface transition-colors" title="Italic">
+<span class="material-symbols-outlined text-[20px]">format_italic</span>
+</button>
+<button class="p-1.5 rounded hover:bg-surface-variant text-on-surface transition-colors" title="Underline">
+<span class="material-symbols-outlined text-[20px]">format_underlined</span>
+</button>
+<div class="w-px h-5 bg-outline-variant/40 mx-1"></div>
+<button class="p-1.5 rounded hover:bg-surface-variant text-on-surface transition-colors" title="Link">
+<span class="material-symbols-outlined text-[20px]">link</span>
+</button>
+<button class="p-1.5 rounded hover:bg-surface-variant text-on-surface transition-colors" title="Insert Table">
+<span class="material-symbols-outlined text-[20px]">table_view</span>
+</button>
+<div class="w-px h-5 bg-outline-variant/40 mx-1"></div>
+<button class="p-1.5 rounded hover:bg-surface-variant text-on-surface transition-colors" title="More Options">
+<span class="material-symbols-outlined text-[20px]">more_vert</span>
+</button>
+</div>
+<!-- Right side document actions -->
+<div class="hidden sm:flex items-center gap-3 ml-auto">
+<span class="font-body-sm text-body-sm text-outline flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">cloud_done</span> Saved
+                        </span>
+<button class="px-4 py-1.5 rounded-md bg-primary text-on-primary font-body-sm text-body-sm font-medium shadow-sm hover:bg-primary/90 transition-colors">
+                            Publish
+                        </button>
+</div>
+</div>
+<!-- Canvas -->
+<div class="flex-1 overflow-y-auto w-full flex justify-center">
+<div class="w-full max-w-3xl px-6 py-12 md:px-12 md:py-16 pb-32">
+<!-- Document Title -->
+<input class="w-full bg-transparent border-none p-0 focus:ring-0 font-display-lg text-display-lg font-bold text-on-surface placeholder:text-outline-variant mb-8 outline-none" placeholder="Document Title" type="text" value="System Architecture"/>
+<!-- Meta Info / Authors -->
+<div class="flex items-center gap-3 mb-10 pb-6 border-b border-outline-variant/10">
+<div class="flex -space-x-2">
+<img alt="Author" class="w-6 h-6 rounded-full border-2 border-surface-bright object-cover" data-alt="A small circular avatar of a tech lead with glasses, cool-toned professional lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBPoizBcw4H9tzPpJZrgyhO1N5G5CMaOzD60Lnz3aAORZNGDfNJdnDPLLqHVrNvFYQscMm8Rw7LYtdlP5i07nNct9WtL6Rk_Qc4eGNKbGgdTcnQqkZnDdscO9t7sHyiRhIziqWXbfX1nV0YzPjlqzXaaDlTqEfh1CTto_74xFMAXyr7W1RRS61CKRmLH38YJA-3pr0XznZ00L57G5lP7n6pmQdwigNpV7OUUZUH6_PsjaFupIv_WZrjuzvMBHB8K1Zra9vf5DkeuaE"/>
+<div class="w-6 h-6 rounded-full border-2 border-surface-bright bg-secondary-container flex items-center justify-center text-[10px] text-on-secondary-container font-bold">+2</div>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Last edited 2 hours ago by <span class="font-medium text-on-surface">Sarah J.</span></span>
+</div>
+<!-- Content Blocks -->
+<div class="space-y-6 font-body-md text-body-md text-on-surface-variant leading-relaxed">
+<p class="hover:bg-surface-container-lowest -mx-4 px-4 py-1 rounded transition-colors group relative cursor-text">
+<span class="absolute -left-8 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer p-1 text-outline hover:text-primary">
+<span class="material-symbols-outlined text-[18px]">drag_indicator</span>
+</span>
+                                We are using a polyglot approach. Relational data is in <strong class="text-on-surface font-semibold bg-surface-container px-1 rounded">Postgres</strong>, while unstructured event streams are handled by our Kafka clusters.
+                            </p>
+<p class="hover:bg-surface-container-lowest -mx-4 px-4 py-1 rounded transition-colors group relative cursor-text">
+<span class="absolute -left-8 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer p-1 text-outline hover:text-primary">
+<span class="material-symbols-outlined text-[18px]">drag_indicator</span>
+</span>
+                                The primary goal of this architecture is to decouple the ingestion layer from the analytical processing workloads, ensuring high availability during peak enterprise traffic.
+                            </p>
+<!-- Add Block Hint -->
+<div class="relative group mt-8">
+<div class="absolute left-0 top-1/2 -translate-y-1/2 w-full h-px bg-outline-variant/20 group-hover:bg-primary/30 transition-colors"></div>
+<div class="relative flex justify-center">
+<button class="bg-surface-bright px-4 py-1.5 rounded-full border border-outline-variant/30 text-on-surface-variant hover:text-primary hover:border-primary/50 shadow-sm flex items-center gap-2 font-body-sm text-body-sm transition-all group-hover:scale-105 bg-clip-padding backdrop-filter backdrop-blur-sm">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                                        Add Block
+                                    </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>
