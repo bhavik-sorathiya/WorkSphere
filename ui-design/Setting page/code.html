@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>WorkSphere - Workspace Settings</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@600;700&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface-variant": "#45474c",
+                        "secondary-fixed-dim": "#adc6ff",
+                        "tertiary": "#061525",
+                        "primary-fixed-dim": "#bcc7de",
+                        "surface-container": "#f0edef",
+                        "on-tertiary-fixed": "#0d1c2d",
+                        "inverse-on-surface": "#f3f0f2",
+                        "background": "#fbf8fa",
+                        "tertiary-container": "#1b2a3b",
+                        "surface-variant": "#e4e2e3",
+                        "error-container": "#ffdad6",
+                        "on-surface": "#1b1b1d",
+                        "on-error-container": "#93000a",
+                        "on-tertiary-fixed-variant": "#39485a",
+                        "on-tertiary-container": "#8291a6",
+                        "inverse-surface": "#303032",
+                        "primary-container": "#1e293b",
+                        "surface-bright": "#fbf8fa",
+                        "surface-container-highest": "#e4e2e3",
+                        "on-secondary-fixed": "#001a42",
+                        "surface": "#fbf8fa",
+                        "surface-container-low": "#f5f3f4",
+                        "on-primary-fixed-variant": "#3c475a",
+                        "surface-container-high": "#eae7e9",
+                        "tertiary-fixed": "#d4e4fa",
+                        "on-background": "#1b1b1d",
+                        "tertiary-fixed-dim": "#b9c8de",
+                        "secondary-container": "#2170e4",
+                        "on-tertiary": "#ffffff",
+                        "outline": "#75777d",
+                        "on-primary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "primary-fixed": "#d8e3fb",
+                        "on-secondary-container": "#fefcff",
+                        "surface-tint": "#545f73",
+                        "primary": "#091426",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-container": "#8590a6",
+                        "on-secondary-fixed-variant": "#004395",
+                        "outline-variant": "#c5c6cd",
+                        "on-primary-fixed": "#111c2d",
+                        "secondary-fixed": "#d8e2ff",
+                        "secondary": "#0058be",
+                        "error": "#ba1a1a",
+                        "inverse-primary": "#bcc7de",
+                        "surface-dim": "#dcd9db",
+                        "on-secondary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-desktop": "40px",
+                        "base": "8px",
+                        "margin-mobile": "16px",
+                        "gutter": "24px",
+                        "container-max": "1440px"
+                    },
+                    "fontFamily": {
+                        "body-sm": ["Inter"],
+                        "label-caps": ["JetBrains Mono"],
+                        "display-lg": ["Hanken Grotesk"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "headline-lg-mobile": ["Hanken Grotesk"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .glass-panel {
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(188, 199, 222, 0.2); /* primary-fixed-dim approx Azure Frost */
+        }
+        .shadow-tinted {
+            box-shadow: 0 4px 6px -1px rgba(30, 41, 59, 0.05), 0 2px 4px -2px rgba(30, 41, 59, 0.05); /* Midnight Slate tinted */
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1;
+        }
+        
+        /* Input Glow Override */
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(188, 199, 222, 0.5) !important; /* Azure Frost glow */
+            border-color: #bcc7de !important;
+        }
+    </style>
+</head>
+<body class="bg-surface font-body-md text-on-surface antialiased flex flex-col min-h-screen">
+<!-- TopNavBar (JSON Anchored) -->
+<header class="bg-surface/80 dark:bg-surface-container/80 backdrop-blur-xl shadow-sm flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-base sticky top-0 z-50">
+<div class="flex items-center gap-4">
+<!-- Mobile Menu Toggle (Hidden on Desktop) -->
+<button aria-label="Open Menu" class="md:hidden text-on-surface-variant hover:text-primary p-2 active:scale-95 transition-transform">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+<div class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg font-bold text-primary dark:text-primary-fixed tracking-tight">
+                WorkSphere
+            </div>
+<!-- Org Menu (Added from Prompt) -->
+<button class="hidden md:flex items-center gap-1 text-on-surface-variant hover:text-primary font-body-sm text-body-sm px-3 py-1.5 rounded-md hover:bg-surface-variant/50 transition-colors duration-200">
+                Acme Corp
+                <span class="material-symbols-outlined text-[16px]" data-icon="arrow_drop_down">arrow_drop_down</span>
+</button>
+</div>
+<div class="flex-1 max-w-md mx-4 hidden md:block">
+<!-- Search Bar (on_left configuration) -->
+<div class="relative w-full group">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-primary" data-icon="search">search</span>
+<input class="w-full bg-surface-container-low border border-outline-variant/30 rounded-full py-2 pl-10 pr-4 font-body-sm text-body-sm text-on-surface placeholder:text-on-surface-variant focus:bg-surface transition-all" placeholder="Search..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button aria-label="notifications" class="text-on-surface-variant hover:text-primary hover:bg-surface-variant/50 transition-colors duration-200 p-2 rounded-full active:scale-95 transition-transform">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button aria-label="apps" class="text-on-surface-variant hover:text-primary hover:bg-surface-variant/50 transition-colors duration-200 p-2 rounded-full active:scale-95 transition-transform">
+<span class="material-symbols-outlined" data-icon="apps">apps</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary hover:bg-surface-variant/50 transition-colors duration-200 px-3 py-1.5 rounded-full active:scale-95 transition-transform hidden sm:block font-body-sm text-body-sm">
+                Help
+            </button>
+<div class="ml-2 w-8 h-8 rounded-full overflow-hidden border border-outline-variant/20 cursor-pointer hover:opacity-90 transition-opacity">
+<img alt="User profile photo" class="w-full h-full object-cover" data-alt="A professional headshot of a corporate user with a soft, natural expression. The lighting is bright and even, casting subtle shadows to emphasize depth. The background is a clean, neutral gray gradient. The individual is wearing modern, minimalist business casual attire. The overall aesthetic is polished, high-resolution, and corporate." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDCvNPPjjEKGqiubsAeG_8Mhys8B4rMXFzmzXXhsfU9MkNNRJQyIZuMuSR3E_hDcVnf_7zXFodsuCQi_rl-VOWmhrtcqw0dfRqbqeAsJZWRevSsn0gZU5_bTZkBnYzVYlf1MN9Xx2BocxQyEO-LzORfNq0yTeG2dR4Urt73vtxX4eOQx00BOQjPzpt6rDLu9q9ghKSLrEsnfGJZYE0PXcDweqKM2d4Jfx20KsWIRwhjLhQalNjz3VyrF_mnGX_DRcU0si0WE5AY80g"/>
+</div>
+</div>
+</header>
+<div class="flex flex-1 w-full max-w-container-max mx-auto relative">
+<!-- SideNavBar (JSON Anchored) -->
+<nav class="hidden md:flex flex-col h-[calc(100vh-64px)] w-64 fixed left-0 top-[64px] bg-surface-container-low/80 dark:bg-surface-container-highest/10 backdrop-blur-xl shadow-md shadow-primary/5 p-4 gap-2 z-40">
+<div class="mb-6 px-2 flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-primary-container text-on-primary-container flex items-center justify-center font-bold text-lg overflow-hidden">
+<img alt="Workspace logo" class="w-full h-full object-cover" data-alt="A minimalist logo design for 'Acme Corp' featuring geometric intersecting shapes. The primary color is a deep Midnight Slate blue (#1E293B) against a soft, luminous white background. The style is sharp, precise, and corporate modern, with subtle translucent layers hinting at glassmorphism. The lighting feels crisp and atmospheric." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCNpQIopsWKpgIpfbZqt20Gye7LwCXVNRW0tvCoRlL6bUviDKT3VkzhvrxExDX2_58CCVmyXxOFhOdMUBqOeNAl77Xz0CXf9lD83e3wSBUNhS6ycQfBQUOS9nhqPFLsyh9ktmzAwE8Lx7qsSFD_vpLMbh8kxWtdanJ8il0OvJsORWODsdE1lqgaD8jweWh-53mn5ADGfUcW7_1CbOWvKbq_i-obEnf8nWfhmyFa9rMtR5cD6vBKlFNTe0nGMc9lwk09F4N2xbItNwA"/>
+</div>
+<div>
+<div class="font-label-caps text-label-caps font-bold text-primary">Acme Corp</div>
+<div class="text-[10px] text-on-surface-variant uppercase tracking-wider">Enterprise Plan</div>
+</div>
+</div>
+<div class="flex-1 flex flex-col gap-1">
+<!-- Home -->
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-variant/50 flex items-center gap-3 p-3 rounded-lg hover:bg-surface-variant/50 transition-all duration-200 active:translate-x-1 transition-transform font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span>Home</span>
+</a>
+<!-- Boards -->
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-variant/50 flex items-center gap-3 p-3 rounded-lg hover:bg-surface-variant/50 transition-all duration-200 active:translate-x-1 transition-transform font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span>Boards</span>
+</a>
+<!-- Chat -->
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-variant/50 flex items-center gap-3 p-3 rounded-lg hover:bg-surface-variant/50 transition-all duration-200 active:translate-x-1 transition-transform font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined" data-icon="chat">chat</span>
+<span>Chat</span>
+</a>
+<!-- Docs -->
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-variant/50 flex items-center gap-3 p-3 rounded-lg hover:bg-surface-variant/50 transition-all duration-200 active:translate-x-1 transition-transform font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined" data-icon="description">description</span>
+<span>Docs</span>
+</a>
+<!-- Settings (Active) -->
+<a class="bg-primary dark:bg-primary-container text-on-primary dark:text-on-primary-container rounded-lg flex items-center gap-3 p-3 hover:bg-surface-variant/50 transition-all duration-200 active:translate-x-1 transition-transform font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span>Settings</span>
+</a>
+</div>
+<div class="mt-auto">
+<button class="w-full py-2.5 px-4 bg-transparent border border-primary-fixed-dim/50 text-primary font-body-sm text-body-sm font-medium rounded-lg hover:bg-primary/5 transition-colors duration-200 flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]" data-icon="person_add">person_add</span>
+                    Invite Members
+                </button>
+</div>
+</nav>
+<!-- Main Canvas -->
+<main class="flex-1 md:ml-64 w-full p-margin-mobile md:p-gutter">
+<!-- Page Header -->
+<div class="mb-8">
+<h1 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg font-semibold text-primary tracking-tight">Workspace Settings</h1>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Manage organization governance, roles, and user access.</p>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
+<!-- Left Column (Wider) -->
+<div class="lg:col-span-2 space-y-gutter">
+<!-- Invite Section -->
+<section class="glass-panel rounded-xl p-6 shadow-tinted relative overflow-hidden">
+<!-- Subtle background gradient hint -->
+<div class="absolute inset-0 bg-gradient-to-br from-white to-primary-fixed/5 pointer-events-none"></div>
+<div class="relative z-10">
+<h2 class="font-body-md text-body-md font-semibold text-primary mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary" data-icon="mail">mail</span>
+                                Invite New Users
+                            </h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-5">Send invitations to colleagues to join Acme Corp. They will receive a secure onboarding link via email.</p>
+<form class="space-y-4">
+<div>
+<label class="block font-label-caps text-label-caps text-on-surface-variant mb-1.5">Email Address</label>
+<div class="flex flex-col sm:flex-row gap-3">
+<div class="relative flex-1">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant/50 text-[18px]" data-icon="alternate_email">alternate_email</span>
+<input class="w-full bg-white border border-outline-variant/50 rounded-lg py-2.5 pl-9 pr-4 font-body-sm text-body-sm text-on-surface shadow-inner placeholder:text-on-surface-variant/40 transition-shadow" placeholder="colleague@company.com" type="email"/>
+</div>
+<!-- Roles Selector -->
+<div class="sm:w-48">
+<select class="w-full bg-white border border-outline-variant/50 rounded-lg py-2.5 px-3 font-body-sm text-body-sm text-on-surface shadow-inner appearance-none transition-shadow">
+<option value="member">Member</option>
+<option value="manager">Manager</option>
+<option value="admin">Admin</option>
+</select>
+</div>
+<button class="bg-primary-container text-on-primary py-2.5 px-5 rounded-lg font-body-sm text-body-sm font-medium hover:bg-primary transition-colors shadow-sm whitespace-nowrap flex items-center justify-center gap-2" type="button">
+                                            Send Invite
+                                            <span class="material-symbols-outlined text-[16px]" data-icon="send">send</span>
+</button>
+</div>
+</div>
+</form>
+</div>
+</section>
+<!-- Active Members List -->
+<section class="glass-panel rounded-xl shadow-tinted relative overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-br from-white to-primary-fixed/5 pointer-events-none"></div>
+<div class="relative z-10">
+<div class="p-6 border-b border-outline-variant/20 flex justify-between items-center">
+<h2 class="font-body-md text-body-md font-semibold text-primary flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary" data-icon="group">group</span>
+                                    Active Members <span class="bg-surface-variant text-on-surface-variant px-2 py-0.5 rounded-full text-[12px] ml-1">3</span>
+</h2>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-on-surface-variant/50 text-[16px]" data-icon="search">search</span>
+<input class="w-32 sm:w-48 bg-surface-container-low border-transparent rounded-full py-1.5 pl-8 pr-3 font-body-sm text-body-sm text-on-surface focus:border-outline-variant/30 focus:bg-white transition-all text-[13px]" placeholder="Filter..." type="text"/>
+</div>
+</div>
+<ul class="divide-y divide-outline-variant/10">
+<!-- Member 1 -->
+<li class="p-4 hover:bg-surface-container-lowest/50 transition-colors flex items-center justify-between group">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-tertiary-fixed text-on-tertiary-fixed flex items-center justify-center font-bold text-sm">
+                                            A
+                                        </div>
+<div>
+<div class="font-body-sm text-body-sm font-medium text-on-surface flex items-center gap-2">
+                                                Alex
+                                                <span class="bg-primary-fixed/30 text-on-primary-container border border-primary-fixed-dim/20 text-[10px] uppercase tracking-wider font-semibold px-1.5 py-0.5 rounded">Owner</span>
+</div>
+<div class="text-[13px] text-on-surface-variant">alex@acmecorp.com</div>
+</div>
+</div>
+<button class="opacity-0 group-hover:opacity-100 focus:opacity-100 transition-opacity text-secondary font-body-sm text-body-sm font-medium hover:underline text-[13px]">
+                                        Edit Role
+                                    </button>
+</li>
+<!-- Member 2 -->
+<li class="p-4 hover:bg-surface-container-lowest/50 transition-colors flex items-center justify-between group">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center font-bold text-sm">
+                                            B
+                                        </div>
+<div>
+<div class="font-body-sm text-body-sm font-medium text-on-surface flex items-center gap-2">
+                                                Bob
+                                                <span class="bg-surface-variant text-on-surface-variant border border-outline-variant/20 text-[10px] uppercase tracking-wider font-semibold px-1.5 py-0.5 rounded">Manager</span>
+</div>
+<div class="text-[13px] text-on-surface-variant">bob@acmecorp.com</div>
+</div>
+</div>
+<button class="opacity-0 group-hover:opacity-100 focus:opacity-100 transition-opacity text-secondary font-body-sm text-body-sm font-medium hover:underline text-[13px]">
+                                        Edit Role
+                                    </button>
+</li>
+<!-- Member 3 (Implied by (3)) -->
+<li class="p-4 hover:bg-surface-container-lowest/50 transition-colors flex items-center justify-between group">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-variant text-on-surface-variant flex items-center justify-center font-bold text-sm">
+                                            C
+                                        </div>
+<div>
+<div class="font-body-sm text-body-sm font-medium text-on-surface flex items-center gap-2">
+                                                Charlie
+                                                <span class="bg-surface-container text-on-surface-variant border border-outline-variant/20 text-[10px] uppercase tracking-wider font-semibold px-1.5 py-0.5 rounded">Member</span>
+</div>
+<div class="text-[13px] text-on-surface-variant">charlie@acmecorp.com</div>
+</div>
+</div>
+<button class="opacity-0 group-hover:opacity-100 focus:opacity-100 transition-opacity text-secondary font-body-sm text-body-sm font-medium hover:underline text-[13px]">
+                                        Edit Role
+                                    </button>
+</li>
+</ul>
+</div>
+</section>
+</div>
+<!-- Right Column (Sidebar-esque info) -->
+<div class="space-y-gutter">
+<!-- Governance Summary Card -->
+<div class="glass-panel rounded-xl p-5 shadow-tinted bg-gradient-to-br from-white to-surface-container-low relative">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]" data-icon="policy">policy</span>
+                            Governance Policy
+                        </h3>
+<div class="space-y-4">
+<div>
+<div class="text-[11px] uppercase tracking-wider text-on-surface-variant/70 mb-1">Domain Restriction</div>
+<div class="font-body-sm text-body-sm text-primary font-medium flex items-center justify-between">
+                                    @acmecorp.com
+                                    <span class="material-symbols-outlined text-green-600 text-[18px]" data-icon="check_circle">check_circle</span>
+</div>
+</div>
+<hr class="border-outline-variant/20"/>
+<div>
+<div class="text-[11px] uppercase tracking-wider text-on-surface-variant/70 mb-1">Default Role</div>
+<div class="font-body-sm text-body-sm text-primary font-medium">Member</div>
+</div>
+<hr class="border-outline-variant/20"/>
+<div>
+<div class="text-[11px] uppercase tracking-wider text-on-surface-variant/70 mb-1">2FA Requirement</div>
+<div class="font-body-sm text-body-sm text-primary font-medium flex items-center justify-between">
+                                    Enforced for Admins
+                                    <span class="material-symbols-outlined text-amber-600 text-[18px]" data-icon="warning">warning</span>
+</div>
+</div>
+</div>
+<div class="mt-6">
+<button class="w-full text-center text-[13px] font-medium text-secondary hover:text-primary transition-colors">
+                                Advanced Security Settings →
+                            </button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- Footer (JSON Anchored) -->
+<footer class="bg-surface-container-lowest dark:bg-tertiary-container text-on-surface-variant dark:text-on-tertiary-container font-body-sm text-body-sm py-6 px-margin-mobile md:px-margin-desktop w-full border-t border-outline-variant/20 flex flex-col md:flex-row justify-between items-center gap-4 mt-auto z-10 relative">
+<div class="font-label-caps text-label-caps font-bold">
+            © 2024 WorkSphere Enterprise
+        </div>
+<div class="flex flex-wrap justify-center gap-6">
+<a class="text-on-surface-variant hover:text-primary hover:underline transition-all opacity-80 hover:opacity-100" href="#">Help Center</a>
+<a class="text-on-surface-variant hover:text-primary hover:underline transition-all opacity-80 hover:opacity-100" href="#">Privacy Policy</a>
+<a class="text-on-surface-variant hover:text-primary hover:underline transition-all opacity-80 hover:opacity-100" href="#">Terms of Service</a>
+<a class="text-on-surface-variant hover:text-primary hover:underline transition-all opacity-80 hover:opacity-100" href="#">Status</a>
+</div>
+</footer>
+</body></html>
