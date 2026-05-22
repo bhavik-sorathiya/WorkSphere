@@ -1,0 +1,479 @@
+@import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ══════════════════════════════════════════
+   ATMOSPHERIC AZURE — Design System Tokens
+   ══════════════════════════════════════════ */
+:root {
+  --surface: #fbf8fa;
+  --surface-dim: #dcd9db;
+  --surface-bright: #fbf8fa;
+  --surface-container-lowest: #ffffff;
+  --surface-container-low: #f5f3f4;
+  --surface-container: #f0edef;
+  --surface-container-high: #eae7e9;
+  --surface-container-highest: #e4e2e3;
+  --on-surface: #1b1b1d;
+  --on-surface-variant: #45474c;
+
+  --primary: #091426;
+  --on-primary: #ffffff;
+  --primary-container: #1e293b;
+  --on-primary-container: #ffffff;
+
+  --secondary: #0058be;
+  --on-secondary: #ffffff;
+  --secondary-container: #2170e4;
+  --on-secondary-container: #fefcff;
+
+  --outline: #75777d;
+  --outline-variant: #c5c6cd;
+
+  --error: #ba1a1a;
+  --error-container: #ffdad6;
+
+  --warning: #b36b00;
+  --warning-container: #ffebc9;
+
+  --success: #006d3a;
+  --success-container: #93f8b0;
+
+  --container-max: 1440px;
+  --gutter: 24px;
+  --sidebar-width: 240px;
+  --header-height: 56px;
+
+  /* Glassmorphism Tokens */
+  --glass-bg: rgba(255, 255, 255, 0.65);
+  --glass-border: rgba(255, 255, 255, 0.6);
+  --glass-shadow: rgba(0, 0, 0, 0.03);
+  --glass-shadow-elevated: rgba(0, 0, 0, 0.08);
+}
+
+.dark {
+  --surface: #131315;
+  --surface-dim: #131315;
+  --surface-bright: #39393b;
+  --surface-container-lowest: #0e0e0f;
+  --surface-container-low: #1b1b1d;
+  --surface-container: #1f1f21;
+  --surface-container-high: #2a2a2c;
+  --surface-container-highest: #353436;
+  --on-surface: #e4e2e3;
+  --on-surface-variant: #c5c6cd;
+
+  --primary: #a7c8ff;
+  --on-primary: #003061;
+  --primary-container: #004689;
+  --on-primary-container: #d6e3ff;
+
+  --secondary: #b0c6ff;
+  --on-secondary: #002d6d;
+  --secondary-container: #004299;
+  --on-secondary-container: #d9e2ff;
+
+  --outline: #8f9099;
+  --outline-variant: #45474c;
+
+  --error: #ffb4ab;
+  --error-container: #93000a;
+
+  --warning: #ffb951;
+  --warning-container: #663d00;
+
+  --success: #77db96;
+  --success-container: #00522a;
+
+  /* Glassmorphism Tokens */
+  --glass-bg: rgba(25, 25, 28, 0.65);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-shadow: rgba(0, 0, 0, 0.2);
+  --glass-shadow-elevated: rgba(0, 0, 0, 0.35);
+}
+
+@layer base {
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background: var(--surface);
+    color: var(--on-surface);
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  /* Atmospheric Background Orbs for Glass Effect */
+  body::before {
+    content: "";
+    position: fixed;
+    top: -15%;
+    left: -10%;
+    width: 60vw;
+    height: 60vh;
+    background: radial-gradient(circle, var(--primary) 0%, transparent 60%);
+    opacity: 0.06;
+    z-index: -1;
+    pointer-events: none;
+    filter: blur(80px);
+  }
+
+  body::after {
+    content: "";
+    position: fixed;
+    bottom: -15%;
+    right: -10%;
+    width: 60vw;
+    height: 60vh;
+    background: radial-gradient(circle, var(--secondary) 0%, transparent 60%);
+    opacity: 0.06;
+    z-index: -1;
+    pointer-events: none;
+    filter: blur(80px);
+  }
+
+  .dark body::before, .dark body::after {
+    opacity: 0.12;
+  }
+}
+
+@layer components {
+  /* Glassmorphic Card Tiers */
+  .glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid var(--glass-border);
+    border-radius: 1rem;
+    box-shadow: 0 4px 24px var(--glass-shadow);
+  }
+
+  .glass-card-elevated {
+    background: var(--glass-bg);
+    backdrop-filter: blur(32px);
+    -webkit-backdrop-filter: blur(32px);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 8px 32px var(--glass-shadow-elevated);
+    border-radius: 1rem;
+  }
+
+  /* Azure chip */
+  .chip-azure {
+    background: var(--secondary-container);
+    color: var(--on-secondary-container);
+    font-weight: 600;
+    font-size: 0.75rem;
+    padding: 0.25rem 0.625rem;
+    border-radius: 9999px;
+  }
+
+  /* Label caps — JetBrains Mono */
+  .label-caps {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 500;
+    line-height: 1rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  /* Primary button */
+  .btn-primary {
+    background: var(--primary);
+    color: var(--on-primary);
+    font-weight: 600;
+    padding: 0.625rem 1.25rem;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease;
+    border: none;
+    cursor: pointer;
+    font-size: 0.875rem;
+  }
+  .btn-primary:hover {
+    background: var(--primary-container);
+    color: var(--on-primary-container);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-1px);
+  }
+  .btn-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  /* Secondary/outline button */
+  /* Overrides for primary button in dark mode to keep text light and background dark */
+  .dark .btn-primary {
+    background: var(--primary-container);
+    color: #ffffff;
+  }
+  .dark .btn-primary:hover {
+    background: var(--primary);
+    color: var(--on-primary);
+  }
+  .dark .btn-primary:disabled {
+    background: var(--primary-container);
+    color: rgba(255, 255, 255, 0.45);
+    opacity: 0.85;
+  }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--on-surface);
+    font-weight: 600;
+    padding: 0.625rem 1.25rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--outline-variant);
+    transition: all 0.2s ease;
+    cursor: pointer;
+    font-size: 0.875rem;
+  }
+  .btn-secondary:hover {
+    border-color: var(--secondary);
+    color: var(--on-secondary-container);
+    background: var(--secondary-container);
+  }
+
+  /* Input field */
+  .input-field {
+    width: 100%;
+    padding: 0.625rem 0.875rem;
+    border: 1px solid var(--outline-variant);
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    transition: all 0.2s ease;
+    background: var(--surface-container-lowest);
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.04);
+    color: var(--on-surface);
+  }
+  .input-field:focus {
+    outline: none;
+    border-color: var(--secondary);
+    box-shadow: 0 0 0 1px var(--secondary);
+  }
+  .input-field::placeholder {
+    color: var(--outline);
+  }
+
+  /* Nav item */
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.625rem 1rem;
+    font-weight: 500;
+    font-size: 0.9375rem;
+    border-radius: 0.5rem;
+    transition: all 0.15s ease;
+    color: var(--on-surface-variant);
+    cursor: pointer;
+    text-decoration: none;
+  }
+  .nav-item:hover {
+    background: var(--surface-container-high);
+    color: var(--on-surface);
+  }
+  .nav-item.active {
+    background: var(--primary-container);
+    color: var(--on-primary-container);
+    font-weight: 600;
+  }
+  .nav-item.active svg {
+    color: var(--on-primary-container) !important;
+  }
+}
+
+@layer utilities {
+  /* Custom scrollbar */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: var(--outline-variant);
+    border-radius: 9999px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: var(--outline);
+  }
+
+  /* Fade in animation */
+  .animate-fade-in {
+    animation: fadeIn 0.3s ease forwards;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Slide in from left */
+  .animate-slide-in {
+    animation: slideIn 0.25s ease forwards;
+  }
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateX(-12px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  /* Pulse subtle */
+  .animate-pulse-subtle {
+    animation: pulseSoft 2s ease-in-out infinite;
+  }
+  @keyframes pulseSoft {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+  }
+
+  /* Spin */
+  .animate-spin-slow {
+    animation: spin 1.5s linear infinite;
+  }
+
+  /* Display font class */
+  .font-display {
+    font-family: 'Hanken Grotesk', system-ui, sans-serif;
+  }
+
+  /* Toast animations */
+  .animate-toast-enter {
+    animation: toastEnter 0.3s cubic-bezier(0.2, 0, 0, 1) forwards;
+  }
+  .animate-toast-leave {
+    animation: toastLeave 0.3s cubic-bezier(0.2, 0, 0, 1) forwards;
+  }
+  @keyframes toastEnter {
+    from { opacity: 0; transform: translateY(100%) scale(0.9); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  @keyframes toastLeave {
+    from { opacity: 1; transform: translateY(0) scale(1); }
+    to { opacity: 0; transform: translateY(100%) scale(0.9); }
+  }
+
+  /* Fullscreen MDEditor fix */
+  .w-md-editor-fullscreen {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 99999 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+  }
+}
+
+/* React Quill Editor Theming */
+.quill-container {
+  background: var(--surface-container-lowest);
+  color: var(--on-surface);
+}
+.quill-container .ql-toolbar.ql-snow {
+  border-color: var(--outline-variant);
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+}
+.quill-container .ql-container.ql-snow {
+  border-color: var(--outline-variant);
+  border-bottom-left-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+}
+.quill-container .ql-editor.ql-blank::before {
+  color: var(--outline);
+  font-style: normal;
+}
+.dark .quill-container .ql-snow .ql-stroke {
+  stroke: var(--on-surface);
+}
+.dark .quill-container .ql-snow .ql-fill {
+  fill: var(--on-surface);
+}
+.dark .quill-container .ql-snow .ql-picker {
+  color: var(--on-surface);
+}
+.dark .quill-container .ql-snow .ql-picker-options {
+  background-color: var(--surface-container-high);
+  border-color: var(--outline-variant);
+}
+.dark .quill-container .ql-snow .ql-picker-item:hover {
+  color: var(--secondary);
+}
+.dark .quill-container .ql-snow.ql-toolbar button:hover .ql-stroke,
+.dark .quill-container .ql-snow .ql-toolbar button:hover .ql-stroke,
+.dark .quill-container .ql-snow.ql-toolbar button.ql-active .ql-stroke,
+.dark .quill-container .ql-snow .ql-toolbar button.ql-active .ql-stroke {
+  stroke: var(--secondary);
+}
+.dark .quill-container .ql-snow.ql-toolbar button:hover .ql-fill,
+.dark .quill-container .ql-snow .ql-toolbar button:hover .ql-fill,
+.dark .quill-container .ql-snow.ql-toolbar button.ql-active .ql-fill,
+.dark .quill-container .ql-snow .ql-toolbar button.ql-active .ql-fill {
+  fill: var(--secondary);
+}
+
+/* ══════════════════════════════════════════
+   CLERK GLOBAL OVERRIDES
+   ══════════════════════════════════════════ */
+.cl-userButtonPopoverCard {
+  box-shadow: 0 10px 40px rgba(0,0,0,0.15) !important;
+  border-radius: 16px !important;
+  border: 1px solid var(--outline-variant) !important;
+}
+
+.cl-navbarButton {
+  border-radius: 8px !important;
+}
+
+.cl-navbarButton:hover, .cl-navbarButton.cl-active {
+  background-color: var(--surface-container-high) !important;
+  color: var(--on-surface) !important;
+}
+
+.cl-profileSectionPrimaryButton {
+  color: var(--primary) !important;
+  font-weight: 600 !important;
+}
+
+.cl-profileSectionPrimaryButton:hover {
+  background-color: var(--primary-container) !important;
+}
+
+.cl-formButtonPrimary {
+  background-color: var(--primary) !important;
+  color: var(--on-primary) !important;
+  border-radius: 8px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  font-size: 0.75rem !important;
+  letter-spacing: 0.05em !important;
+  transition: all 0.2s ease !important;
+}
+
+.cl-formButtonPrimary:hover {
+  filter: brightness(1.1) !important;
+}
+
+.cl-formFieldInput {
+  background-color: var(--surface) !important;
+  border: 1px solid var(--outline-variant) !important;
+  border-radius: 8px !important;
+  color: var(--on-surface) !important;
+}
+
+.cl-formFieldInput:focus {
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 0 3px var(--primary-container) !important;
+}
