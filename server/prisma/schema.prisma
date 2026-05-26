@@ -1,0 +1,257 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Organization {
+  id                      String                    @id @default(cuid())
+  name                    String
+  slug                    String                    @unique
+  createdAt               DateTime                  @default(now())
+  workspaceSettings       WorkspaceSetting?
+  projects                Project[]
+  userRoles               UserOrganizationRole[]
+  invites                 OrganizationInvite[]
+  notices                 Notice[]
+  joinRequests            WorkspaceJoinRequest[]
+}
+
+model WorkspaceSetting {
+  id                      String       @id @default(cuid())
+  organizationId          String       @unique
+  organization            Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  allowGuestInvites       Boolean      @default(false)
+  allowMultipleWorkspaces Boolean      @default(true)
+  createdAt               DateTime     @default(now())
+  updatedAt               DateTime     @updatedAt
+}
+
+model User {
+  id                      String                    @id // Mapped to Clerk user ID
+  email                   String                    @unique
+  name                    String?
+  roles                   UserOrganizationRole[]
+  projectMembers          ProjectMember[]
+  projectInvites          ProjectInvite[]
+  taskAssignees           TaskAssignee[]
+  comments                TaskComment[]
+  noticeViewers           NoticeViewer[]
+  joinRequests            WorkspaceJoinRequest[]
+}
+
+model UserOrganizationRole {
+  id             String       @id @default(cuid())
+  userId         String
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  organizationId         String
+  organization           Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  role                   Role         @default(MEMBER)
+  multiWorkspaceException Boolean      @default(false)
+  createdAt              DateTime     @default(now())
+
+  @@unique([userId, organizationId])
+  @@index([organizationId])
+  @@index([userId])
+}
+
+enum Role {
+  OWNER
+  ADMIN
+  MANAGER
+  MEMBER
+  EDITOR
+  VIEWER
+}
+
+model OrganizationInvite {
+  id             String       @id @default(cuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  email          String
+  role           Role         @default(MEMBER)
+  status         InviteStatus @default(PENDING)
+  grantException Boolean      @default(false)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  @@unique([organizationId, email])
+  @@index([organizationId])
+}
+
+enum InviteStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+}
+
+model WorkspaceJoinRequest {
+  id             String       @id @default(cuid())
+  userId         String
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  targetOrgId    String
+  targetOrgName  String
+  status         InviteStatus @default(PENDING)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  @@index([organizationId])
+  @@index([userId])
+}
+
+model Project {
+  id             String          @id @default(cuid())
+  name           String
+  slug           String
+  organizationId String
+  organization   Organization    @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  isDeleted      Boolean         @default(false)
+  isComplete     Boolean         @default(false)
+  deletedAt      DateTime?
+  targetDate     DateTime?
+  expectedDate   DateTime?
+  createdBy      String?
+  updatedBy      String?
+  members        ProjectMember[]
+  invites        ProjectInvite[]
+  channels       Channel[]
+  tasks          Task[]
+  createdAt      DateTime        @default(now())
+
+  @@index([organizationId])
+  @@unique([organizationId, slug])
+}
+
+model ProjectMember {
+  id        String   @id @default(cuid())
+  projectId String
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role      Role     @default(MEMBER)
+  createdAt DateTime @default(now())
+
+  @@unique([projectId, userId])
+  @@index([projectId])
+  @@index([userId])
+}
+
+model ProjectInvite {
+  id        String       @id @default(cuid())
+  projectId String
+  project   Project      @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type      String       // "INVITE" or "REQUEST"
+  status    InviteStatus @default(PENDING)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+
+  @@unique([projectId, userId])
+  @@index([projectId])
+  @@index([userId])
+}
+
+model Channel {
+  id        String   @id @default(cuid())
+  projectId String
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  name      String
+  createdBy String?
+  updatedBy String?
+  createdAt DateTime @default(now())
+
+  @@index([projectId])
+}
+
+model Task {
+  id          String         @id @default(cuid())
+  projectId   String
+  project     Project        @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  title       String
+  status      String         @default("TODO") // TODO, IN_PROGRESS, DONE
+  priority    String         @default("MEDIUM") // LOW, MEDIUM, HIGH
+  dueDate     DateTime?
+  isDeleted   Boolean        @default(false)
+  deletedAt   DateTime?
+  createdBy   String?
+  updatedBy   String?
+  assignees   TaskAssignee[]
+  comments    TaskComment[]
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  @@index([projectId])
+  @@index([status])
+  @@index([priority])
+}
+
+model TaskAssignee {
+  id        String   @id @default(cuid())
+  taskId    String
+  task      Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([taskId, userId])
+  @@index([taskId])
+  @@index([userId])
+}
+
+model TaskComment {
+  id        String   @id @default(cuid())
+  taskId    String
+  task      Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  content   String
+  createdBy String?
+  updatedBy String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([taskId])
+}
+
+model Attachment {
+  id               String   @id @default(cuid())
+  entityType       String   // e.g., "TASK", "DOCUMENT", "COMMENT"
+  entityId         String
+  fileUrl          String
+  providerMetadata Json?
+  createdAt        DateTime @default(now())
+}
+
+model Notice {
+  id             String         @id @default(cuid())
+  organizationId String
+  organization   Organization   @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  title          String
+  content        String
+  createdBy      String
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  isForAll       Boolean        @default(true)
+  viewers        NoticeViewer[]
+
+  @@index([organizationId])
+}
+
+model NoticeViewer {
+  id        String   @id @default(cuid())
+  noticeId  String
+  notice    Notice   @relation(fields: [noticeId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([noticeId, userId])
+  @@index([noticeId])
+  @@index([userId])
+}
