@@ -43,7 +43,7 @@ export default function LandingPage() {
             )}
           </button>
           {isSignedIn ? (
-            <Link to="/home" className="btn-primary">Go to Dashboard</Link>
+            <Link to="/" className="btn-primary">Go to Dashboard</Link>
           ) : (
             <>
               <Link to="/sign-in" className="text-sm font-semibold hover:text-[var(--secondary)] transition-colors">Sign In</Link>
