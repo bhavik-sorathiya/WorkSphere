@@ -61,7 +61,17 @@ export default function ProjectView() {
         navigate(`/${currentOrg?.slug || orgId}/boards`);
         throw new Error("Project not found");
       }
-      return res.json();
+      const briefProject = await res.json();
+      
+      const fullRes = await fetch(`${API}/api/projects/${orgId}/${briefProject.id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      
+      if (!fullRes.ok) {
+        throw new Error("Failed to fetch full project details");
+      }
+      
+      return fullRes.json();
     },
     enabled: !!projectSlug && !!orgId,
     staleTime: 5 * 60 * 1000
@@ -302,7 +312,7 @@ export default function ProjectView() {
       <div className="flex gap-2 p-1 rounded-lg mb-8 w-fit border" style={{ background: 'var(--surface-container-low)', borderColor: 'var(--outline-variant)' }}>
         {[
           { id: "board", label: "Kanban Board", icon: <Columns className="w-4 h-4" /> },
-          { id: "members", label: "Members", icon: <Users className="w-4 h-4" /> },
+          { id: "members", label: `Members ${project.invites?.length > 0 ? `(${project.invites.length} pending)` : ''}`, icon: <Users className="w-4 h-4" /> },
           { id: "settings", label: "Settings", icon: <Settings className="w-4 h-4" /> },
         ].map((tab) => (
           <button key={tab.id} onClick={() => setActiveTab(tab.id)}
@@ -320,11 +330,11 @@ export default function ProjectView() {
 
       {/* ==================== KANBAN BOARD ==================== */}
       {activeTab === "board" && (
-        <div className="flex items-start gap-6 overflow-x-auto custom-scrollbar pb-6">
+        <div className="flex flex-col lg:flex-row items-stretch lg:items-start gap-6 overflow-x-hidden lg:overflow-x-auto custom-scrollbar pb-6 w-full">
           {COLUMNS.map((col) => {
             const columnTasks = tasks.filter((t) => t.status === col.id);
             return (
-              <div key={col.id} className="rounded-xl border p-4 min-h-[500px] w-80 shrink-0 flex flex-col"
+              <div key={col.id} className="rounded-xl border p-4 min-h-[150px] lg:min-h-[500px] w-full lg:w-80 shrink-0 flex flex-col"
                 style={{ background: col.bg, borderColor: col.border }}
                 onDragOver={(e) => e.preventDefault()} onDrop={(e) => handleDrop(e, col.id)}>
                 <div className="flex items-center justify-between mb-4">
@@ -555,39 +565,6 @@ export default function ProjectView() {
                       });
                       if (res.ok) {
                         showToast("Target date updated");
-                        fetchProject();
-                      } else {
-                        const err = await res.json();
-                        showToast(err.error || "Failed", "error");
-                      }
-                    } catch(e) { console.error(e); showToast("Error", "error"); }
-                  }}
-                >
-                  Save Date
-                </button>
-              </div>
-            </div>
-
-            <div className="border-t border-[var(--outline-variant)] pt-6">
-              <label className="block text-sm font-bold text-[var(--on-surface)] mb-2">Expected Date</label>
-              <div className="flex gap-4">
-                <input
-                  type="date"
-                  className="input-field w-full max-w-md"
-                  defaultValue={project.expectedDate ? new Date(project.expectedDate).toISOString().split('T')[0] : ''}
-                  id="expected-date-input"
-                />
-                <button 
-                  className="btn-primary"
-                  onClick={async () => {
-                    const newDate = document.getElementById("expected-date-input").value;
-                    try {
-                      const headers = await authHeaders();
-                      const res = await fetch(`${API}/api/projects/${orgId}/${projectId}`, {
-                        method: "PUT", headers, body: JSON.stringify({ expectedDate: newDate || null })
-                      });
-                      if (res.ok) {
-                        showToast("Expected date updated");
                         fetchProject();
                       } else {
                         const err = await res.json();

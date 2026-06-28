@@ -476,7 +476,12 @@ export const getOrganization = async (req, res, next) => {
             where: { userId }
           },
           _count: {
-            select: { members: true }
+            select: { 
+              members: true,
+              invites: {
+                where: { status: "PENDING" }
+              }
+            }
           }
         },
         orderBy: { createdAt: "desc" },
@@ -510,6 +515,11 @@ export const getOrganizationActivity = async (req, res, next) => {
     const { orgId } = req.params;
     const userId = req.auth?.userId;
 
+    const roleRecord = await prisma.userOrganizationRole.findUnique({
+      where: { userId_organizationId: { userId, organizationId: orgId } }
+    });
+    const userRole = roleRecord?.role;
+    const isAdminOrOwner = userRole === "ADMIN" || userRole === "OWNER";
 
     const projects = await prisma.project.findMany({
       where: { organizationId: orgId },
@@ -521,12 +531,18 @@ export const getOrganizationActivity = async (req, res, next) => {
     const limit = parseInt(req.query.limit) || 15;
     const skip = (page - 1) * limit;
 
-    const activities = await ActivityLog.find({
+    const query = {
       $or: [
         { projectId: { $in: projectIds } },
         { "metadata.orgId": orgId }
       ]
-    }).sort({ timestamp: -1 }).skip(skip).limit(limit);
+    };
+
+    if (!isAdminOrOwner) {
+      query.userId = userId;
+    }
+
+    const activities = await ActivityLog.find(query).sort({ timestamp: -1 }).skip(skip).limit(limit);
 
     const userIds = [...new Set(activities.map(a => a.userId))];
     const users = await prisma.user.findMany({
@@ -584,7 +600,7 @@ export const getOrgInvites = async (req, res, next) => {
 
 
     const invites = await prisma.organizationInvite.findMany({
-      where: { organizationId: orgId },
+      where: { organizationId: orgId, status: "PENDING" },
       orderBy: { createdAt: "desc" },
     });
 

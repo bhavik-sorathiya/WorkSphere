@@ -13,6 +13,9 @@ router.post("/:orgId/:projectId/members", requireAuth(), requireProjectRole("MAN
 router.patch("/:orgId/:projectId/members/:userId/role", requireAuth(), requireProjectRole("MANAGER"), updateProjectMemberRole);
 router.delete("/:orgId/:projectId/members/:userId", requireAuth(), requireProjectRole("MANAGER"), removeProjectMember);
 
+// Get single project by slug (Requires Org MEMBER at least)
+router.get("/:orgId/by-slug/:projectSlug", requireAuth(), requireRole("MEMBER"), getProjectBySlug);
+
 // Get single project details (requires Project VIEWER or Org Admin)
 router.get("/:orgId/:projectId", requireAuth(), requireProjectRole("VIEWER"), getProject);
 
@@ -21,9 +24,6 @@ router.put("/:orgId/:projectId", requireAuth(), requireProjectRole("MANAGER"), u
 
 // Delete project (requires Project MANAGER)
 router.delete("/:orgId/:projectId", requireAuth(), requireProjectRole("MANAGER"), deleteProject);
-
-// Get single project by slug (Requires Org MEMBER at least)
-router.get("/:orgId/by-slug/:projectSlug", requireAuth(), requireRole("MEMBER"), getProjectBySlug);
 
 // Invites & Requests
 router.post("/:orgId/:projectId/request-access", requireAuth(), requireRole("MEMBER"), requestAccess);

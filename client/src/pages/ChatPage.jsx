@@ -77,7 +77,7 @@ export default function ChatPage() {
   const channels = data?.channels || [];
 
   useEffect(() => {
-    if (channels.length > 0 && !activeChannelRef.current) {
+    if (channels.length > 0 && !activeChannelRef.current && window.innerWidth >= 768) {
       setActiveChannel(channels[0]);
     }
   }, [channels]);
@@ -93,7 +93,7 @@ export default function ChatPage() {
     };
 
     const handleChannelCreated = () => {
-      queryClient.invalidateQueries(['chatData', orgId]);
+      queryClient.invalidateQueries(['orgChannels', orgId]);
     };
 
     socket.on("NEW_MESSAGE", handleNewMessage);
@@ -135,12 +135,17 @@ export default function ChatPage() {
     setSending(true);
     try {
       const token = await getToken();
-      await fetch(`${API}/api/chat/${orgId}/projects/${activeChannel.projectId}/channels/${activeChannel.id}/messages`, {
+      const res = await fetch(`${API}/api/chat/${orgId}/projects/${activeChannel.projectId}/channels/${activeChannel.id}/messages`, {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({ content: chatInput }),
       });
-      setChatInput("");
+      if (res.ok) {
+        setChatInput("");
+      } else {
+        const err = await res.json();
+        console.error("Failed to send message:", err);
+      }
     } catch (err) { console.error(err); }
     finally { setSending(false); }
   };
@@ -150,7 +155,7 @@ export default function ChatPage() {
     if (!newChannelName.trim() || !selectedProjectForChannel) return;
     try {
       const token = await getToken();
-      const res = await fetch(`${API}/api/chat/${orgId}/channels`, {
+      const res = await fetch(`${API}/api/chat/${orgId}/projects/${selectedProjectForChannel}/channels`, {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({ name: newChannelName, projectId: selectedProjectForChannel }),

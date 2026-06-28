@@ -244,19 +244,19 @@ export default function DocsPage() {
                 type="text"
                 value={docTitle}
                 onChange={e => setDocTitle(e.target.value)}
-                className="w-full text-4xl font-display font-bold border-none outline-none mb-2"
+                className="w-full text-2xl md:text-4xl font-display font-bold border-none outline-none mb-2"
                 style={{ color: 'var(--on-surface)', background: 'transparent' }}
                 placeholder="Untitled"
               />
               <p className="label-caps mb-4" style={{ color: 'var(--outline)' }}>
                 Last edited • {selectedDoc.projectName}
               </p>
-              <div className="quill-container rounded-lg shadow-sm border" style={{ borderColor: 'var(--outline-variant)' }}>
+              <div className="quill-container rounded-lg shadow-sm border overflow-x-auto w-full" style={{ borderColor: 'var(--outline-variant)' }}>
                 <ReactQuill
                   theme="snow"
                   value={docContent}
                   onChange={setDocContent}
-                  className="min-h-[400px]"
+                  className="min-h-[60vh] md:min-h-[400px]"
                   modules={quillModules}
                 />
               </div>

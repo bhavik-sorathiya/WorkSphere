@@ -89,7 +89,7 @@ export const createProject = async (req, res, next) => {
 
 export const getProject = async (req, res, next) => {
   try {
-    const { projectId } = req.params;
+    const { projectId, orgId } = req.params;
 
     // Run parallel queries to prevent massive nested joins that block the DB
     const [project, members, channels, tasks, invites, orgAdmins] = await Promise.all([
@@ -116,8 +116,8 @@ export const getProject = async (req, res, next) => {
         include: { user: true }
       }),
       prisma.userOrganizationRole.findMany({
-        where: { 
-          organizationId: project.organizationId,
+        where: {
+          organizationId: orgId,
           role: { in: ["ADMIN", "OWNER"] }
         },
         include: { user: true }
@@ -247,6 +247,33 @@ export const requestAccess = async (req, res, next) => {
         status: "PENDING"
       }
     });
+
+    // Notify project managers and org admins
+    const project = await prisma.project.findUnique({
+      where: { id: projectId },
+      include: {
+        members: { where: { role: "MANAGER" }, select: { userId: true } },
+        organization: { include: { members: { where: { role: { in: ["ADMIN", "OWNER"] } }, select: { userId: true } } } }
+      }
+    });
+
+    const userObj = await prisma.user.findUnique({ where: { id: userId }, select: { name: true, email: true } });
+    const notifyName = userObj?.name || userObj?.email || "Someone";
+
+    if (project) {
+      const notifyUserIds = new Set([
+        ...project.members.map(m => m.userId),
+        ...project.organization.members.map(m => m.userId)
+      ]);
+
+      const io = req.app.get("io");
+      notifyUserIds.forEach(id => {
+        io.to(`user_${id}`).emit("notification", {
+          message: `${notifyName} has requested access to join '${project.name}'!`,
+          type: "info"
+        });
+      });
+    }
 
     res.status(201).json(request);
   } catch (error) {
@@ -388,14 +415,13 @@ export const getProjectBySlug = async (req, res, next) => {
 export const updateProject = async (req, res, next) => {
   try {
     const { projectId } = req.params;
-    const { name, isComplete, targetDate, expectedDate } = req.body;
+    const { name, isComplete, targetDate } = req.body;
     
     // requireProjectRole("MANAGER") middleware ensures only Managers/Admins can hit this
     const data = {};
     if (name !== undefined) data.name = name;
     if (isComplete !== undefined) data.isComplete = isComplete;
     if (targetDate !== undefined) data.targetDate = targetDate ? new Date(targetDate) : null;
-    if (expectedDate !== undefined) data.expectedDate = expectedDate ? new Date(expectedDate) : null;
     if (isComplete !== undefined) {
       // Validate tasks
       if (isComplete) {

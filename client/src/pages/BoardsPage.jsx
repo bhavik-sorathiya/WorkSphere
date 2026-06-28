@@ -91,7 +91,7 @@ export default function BoardsPage() {
 
   if (loading) {
     return (
-      <div className="p-8 space-y-6 animate-fade-in">
+      <div className="p-4 md:p-8 space-y-6 animate-fade-in">
         <Skeleton className="h-10 w-48 rounded-lg" />
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <SkeletonCard className="h-40" />
@@ -122,7 +122,7 @@ export default function BoardsPage() {
   });
 
   return (
-    <div className="p-8 max-w-6xl mx-auto animate-fade-in">
+    <div className="p-4 md:p-8 max-w-6xl mx-auto animate-fade-in">
       {/* Header */}
       <div className="flex items-center justify-between mb-8">
         <div>
@@ -165,6 +165,11 @@ export default function BoardsPage() {
                 <span className="flex items-center gap-1 text-xs font-medium" style={{ color: 'var(--on-surface-variant)' }}>
                   <Users className="w-3.5 h-3.5" /> {project._count?.members || 0} members
                 </span>
+                {canManage && project._count?.invites > 0 && (
+                  <span className="flex items-center gap-1 text-xs font-bold px-2 py-0.5 rounded-full" style={{ background: 'var(--warning-container)', color: 'var(--on-warning-container)' }}>
+                    <Clock className="w-3 h-3" /> {project._count.invites} request{project._count.invites > 1 ? 's' : ''}
+                  </span>
+                )}
               </div>
 
               {!hasAccess && (

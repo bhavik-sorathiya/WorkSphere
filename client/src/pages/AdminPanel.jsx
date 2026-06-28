@@ -296,22 +296,26 @@ export default function AdminPanel() {
   const roleOptions = ["ADMIN", "MANAGER", "MEMBER", "VIEWER"];
 
   return (
-    <div className="flex h-full font-sans bg-[var(--surface-container-lowest)] animate-fade-in">
+    <div className="flex flex-col md:flex-row h-full font-sans bg-[var(--surface-container-lowest)] animate-fade-in">
       {/* Sidebar Tabs */}
-      <div className="w-64 border-r border-[var(--outline-variant)] bg-[var(--surface-container-lowest)] p-4 flex flex-col gap-2">
-        <div className="mb-6 px-2">
-          <h1 className="text-xl font-display font-bold text-[var(--on-surface)]">Admin Panel</h1>
-          <p className="text-xs text-[var(--on-surface-variant)] mt-1 truncate">{org.name}</p>
+      <div className="w-full md:w-64 border-b md:border-b-0 md:border-r border-[var(--outline-variant)] bg-[var(--surface-container-lowest)] p-4 flex flex-col gap-2 shrink-0 z-10 md:z-0">
+        <div className="mb-2 md:mb-6 px-2 flex justify-between items-center">
+          <div>
+            <h1 className="text-xl font-display font-bold text-[var(--on-surface)]">Admin Panel</h1>
+            <p className="text-xs text-[var(--on-surface-variant)] mt-1 truncate">{org.name}</p>
+          </div>
         </div>
-        {tabs.map(tab => (
-          <button
-            key={tab.id}
-            onClick={() => setActiveTab(tab.id)}
-            className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${activeTab === tab.id ? 'bg-[var(--primary-container)] text-[var(--on-primary-container)]' : 'text-[var(--on-surface-variant)] hover:bg-[var(--surface-container-high)]'}`}
-          >
-            <tab.icon className="w-4 h-4" /> {tab.name}
-          </button>
-        ))}
+        <div className="flex md:flex-col gap-2 overflow-x-auto custom-scrollbar pb-2 md:pb-0">
+          {tabs.map(tab => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={`flex items-center gap-2 md:gap-3 px-3 py-2 md:py-2.5 rounded-lg text-sm font-medium transition-colors whitespace-nowrap shrink-0 ${activeTab === tab.id ? 'bg-[var(--primary-container)] text-[var(--on-primary-container)]' : 'text-[var(--on-surface-variant)] hover:bg-[var(--surface-container-high)]'}`}
+            >
+              <tab.icon className="w-4 h-4" /> {tab.name}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Main Content Area */}

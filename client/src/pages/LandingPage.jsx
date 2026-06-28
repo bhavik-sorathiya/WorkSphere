@@ -25,8 +25,8 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen bg-[var(--surface)] text-[var(--on-surface)] selection:bg-[var(--secondary)] selection:text-white">
       {/* ─── NAVIGATION ─── */}
-      <nav className="fixed top-0 left-0 w-full z-50 glass-card rounded-none border-b border-[var(--surface-container-high)] px-8 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-3">
+      <nav className="fixed top-0 left-0 w-full z-50 glass-card rounded-none border-b border-[var(--surface-container-high)] px-4 md:px-8 py-3 md:py-4 flex items-center justify-between">
+        <div className="flex items-center gap-2 md:gap-3">
           <img src={logoUrl} alt="WorkSphere" className="w-8 h-8 rounded-lg shadow-sm" />
           <span className="font-display font-extrabold text-xl tracking-tight">WorkSphere</span>
         </div>
@@ -43,18 +43,18 @@ export default function LandingPage() {
             )}
           </button>
           {isSignedIn ? (
-            <Link to="/" className="btn-primary">Go to Dashboard</Link>
+            <Link to="/" className="btn-primary text-xs sm:text-sm px-4 py-2 sm:px-5 sm:py-2.5">Go to Dashboard</Link>
           ) : (
             <>
-              <Link to="/sign-in" className="text-sm font-semibold hover:text-[var(--secondary)] transition-colors">Sign In</Link>
-              <Link to="/sign-up" className="btn-primary shadow-lg shadow-blue-500/20">Get Started</Link>
+              <Link to="/sign-in" className="hidden sm:block text-sm font-semibold hover:text-[var(--secondary)] transition-colors">Sign In</Link>
+              <Link to="/sign-up" className="btn-primary shadow-lg shadow-blue-500/20 text-xs sm:text-sm px-4 py-2 sm:px-5 sm:py-2.5">Get Started</Link>
             </>
           )}
         </div>
       </nav>
 
       {/* ─── HERO SECTION ─── */}
-      <section className="relative pt-32 pb-20 px-8 overflow-hidden">
+      <section className="relative pt-24 md:pt-32 pb-16 md:pb-20 px-4 md:px-8 overflow-hidden">
         {/* Abstract Background */}
         <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
           <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-[var(--primary)] rounded-full blur-[150px] opacity-20 animate-pulse-slow" />
@@ -67,26 +67,26 @@ export default function LandingPage() {
             <span className="text-xs font-bold text-[var(--on-surface-variant)] uppercase tracking-wider">The Future of Work</span>
           </div>
           
-          <h1 className="text-6xl md:text-8xl font-display font-extrabold tracking-tight leading-[1.1] mb-8 animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
+          <h1 className="text-5xl md:text-8xl font-display font-extrabold tracking-tight leading-[1.1] mb-6 md:mb-8 animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
             Unify your <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)]">Workflow.</span>
           </h1>
           
-          <p className="text-xl md:text-2xl text-[var(--on-surface-variant)] max-w-3xl mb-12 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+          <p className="text-lg md:text-2xl text-[var(--on-surface-variant)] max-w-3xl mb-10 md:mb-12 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
             WorkSphere brings Kanban boards, real-time chat, and collaborative documents into one seamlessly integrated, lightning-fast platform.
           </p>
           
-          <div className="flex items-center gap-4 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
-            <Link to="/sign-up" className="btn-primary text-lg px-8 py-4 shadow-xl shadow-blue-500/25 flex items-center gap-2 group">
+          <div className="flex flex-col sm:flex-row items-center gap-4 animate-fade-in-up w-full sm:w-auto px-4 sm:px-0" style={{ animationDelay: '0.3s' }}>
+            <Link to="/sign-up" className="btn-primary text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 shadow-xl shadow-blue-500/25 flex items-center justify-center gap-2 group w-full sm:w-auto">
               Start for free <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Link>
           </div>
         </div>
 
         {/* Dashboard Preview Mockup */}
-        <div className="mt-20 max-w-6xl mx-auto animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
-          <div className="rounded-2xl border border-[var(--surface-container-high)] bg-[var(--surface-container-lowest)] p-2 shadow-2xl relative">
+        <div className="mt-16 md:mt-20 max-w-6xl mx-auto animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
+          <div className="rounded-2xl border border-[var(--surface-container-high)] bg-[var(--surface-container-lowest)] p-1.5 md:p-2 shadow-2xl relative">
             <div className="absolute inset-0 bg-gradient-to-t from-[var(--surface)] to-transparent z-10 rounded-2xl pointer-events-none" />
-            <div className="rounded-xl overflow-hidden border border-[var(--surface-container-high)] bg-[var(--surface-container)] aspect-video relative">
+            <div className="rounded-xl overflow-hidden border border-[var(--surface-container-high)] bg-[var(--surface-container)] aspect-[4/3] md:aspect-video relative">
               {/* Real Dashboard Mockup */}
               <div className="flex h-full bg-[var(--surface)]">
                 {/* Mock Sidebar */}
@@ -105,7 +105,7 @@ export default function LandingPage() {
                 </div>
                 
                 {/* Mock Main Area (Kanban) */}
-                <div className="flex-1 p-6 md:p-8 overflow-hidden bg-[var(--surface)] relative">
+                <div className="flex-1 p-4 md:p-8 overflow-x-auto bg-[var(--surface)] relative custom-scrollbar">
                   {/* Header */}
                   <div className="flex justify-between items-center mb-8">
                     <div className="flex items-center gap-3">
@@ -126,7 +126,7 @@ export default function LandingPage() {
                   </div>
 
                   {/* Kanban Columns */}
-                  <div className="flex gap-4 sm:gap-6 h-full min-h-[300px]">
+                  <div className="flex gap-4 sm:gap-6 h-full min-h-[300px] min-w-[600px] md:min-w-0 pb-4 md:pb-0">
                     {/* To Do */}
                     <div className="flex-1 min-w-[200px] bg-[var(--surface-container-lowest)] border border-[var(--outline-variant)] rounded-xl p-4 flex flex-col">
                       <div className="flex justify-between items-center mb-4">
@@ -180,7 +180,7 @@ export default function LandingPage() {
       </section>
 
       {/* ─── FEATURES GRID ─── */}
-      <section className="py-24 px-8 bg-[var(--surface-container-lowest)] relative z-20">
+      <section className="py-16 md:py-24 px-4 md:px-8 bg-[var(--surface-container-lowest)] relative z-20">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-5xl font-display font-extrabold mb-4">Everything you need to ship faster.</h2>
@@ -222,9 +222,9 @@ export default function LandingPage() {
       </section>
 
       {/* ─── HIGHLIGHTS ─── */}
-      <section className="py-24 px-8 border-t border-[var(--surface-container-high)]">
+      <section className="py-16 md:py-24 px-4 md:px-8 border-t border-[var(--surface-container-high)]">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
             <div>
               <h2 className="text-3xl md:text-5xl font-display font-extrabold mb-6">Designed for speed & security.</h2>
               <div className="space-y-6">
@@ -281,7 +281,7 @@ export default function LandingPage() {
       </section>
 
       {/* ─── FOOTER ─── */}
-      <footer className="border-t border-[var(--surface-container-high)] py-12 px-8 bg-[var(--surface-container-lowest)] text-center">
+      <footer className="border-t border-[var(--surface-container-high)] py-8 md:py-12 px-4 md:px-8 bg-[var(--surface-container-lowest)] text-center">
         <div className="flex items-center justify-center gap-3 mb-6">
           <img src={logoUrl} alt="WorkSphere" className="w-6 h-6 rounded grayscale opacity-50" />
           <span className="font-display font-bold text-lg text-[var(--on-surface-variant)]">WorkSphere</span>

@@ -11,7 +11,7 @@ export default function AuthLayout({ children }) {
       </div>
 
       {/* Header */}
-      <header className="relative z-10 border-b px-8 py-4 flex items-center justify-between glass-card rounded-none" style={{ borderColor: 'var(--surface-container-high)' }}>
+      <header className="relative z-10 border-b px-4 md:px-8 py-3 md:py-4 flex items-center justify-between glass-card rounded-none" style={{ borderColor: 'var(--surface-container-high)' }}>
         <Link to="/" className="flex items-center gap-3 group">
           <img src={logoUrl} alt="WorkSphere" className="w-8 h-8 rounded-lg shadow-sm group-hover:scale-105 transition-transform" />
           <span className="font-display font-bold text-xl tracking-tight" style={{ color: 'var(--on-surface)' }}>WorkSphere</span>
@@ -22,8 +22,8 @@ export default function AuthLayout({ children }) {
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 relative z-10 flex flex-col items-center justify-center p-8">
-        <div className="mb-8 text-center animate-fade-in-up">
+      <main className="flex-1 relative z-10 flex flex-col items-center justify-center p-4 md:p-8">
+        <div className="mb-6 md:mb-8 text-center animate-fade-in-up">
           <h1 className="font-display font-extrabold text-4xl mb-2" style={{ color: 'var(--on-surface)' }}>Welcome to WorkSphere</h1>
           <p className="text-base" style={{ color: 'var(--on-surface-variant)' }}>Enter your details to access your workspaces.</p>
         </div>

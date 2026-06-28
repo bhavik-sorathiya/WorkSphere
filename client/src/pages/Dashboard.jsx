@@ -103,7 +103,7 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen font-sans animate-fade-in" style={{ background: 'var(--surface)' }}>
       {/* Header */}
-      <header className="flex items-center justify-between px-6 py-4 border-b sticky top-0 z-50 transition-colors" style={{
+      <header className="flex items-center justify-between px-4 md:px-6 py-3 md:py-4 border-b sticky top-0 z-50 transition-colors" style={{
         background: 'var(--surface-container-lowest)',
         backdropFilter: 'blur(20px)',
         WebkitBackdropFilter: 'blur(20px)',
@@ -129,7 +129,7 @@ export default function Dashboard() {
         </div>
       </header>
 
-      <main className="max-w-6xl mx-auto px-6 py-12 animate-fade-in">
+      <main className="max-w-6xl mx-auto px-4 md:px-6 py-8 md:py-12 animate-fade-in">
         {/* Greeting */}
         <header className="mb-10">
           <h1 className="text-3xl font-display font-extrabold tracking-tight" style={{ color: 'var(--on-surface)' }}>
@@ -192,7 +192,7 @@ export default function Dashboard() {
               <h3 className="font-bold text-sm mb-4 flex items-center gap-2" style={{ color: 'var(--on-surface)' }}>
                 <PlusCircle className="w-4 h-4" style={{ color: 'var(--secondary)' }} /> Create New Organization
               </h3>
-              <form onSubmit={handleCreateOrg} className="flex gap-3">
+              <form onSubmit={handleCreateOrg} className="flex flex-col sm:flex-row gap-3">
                 <input
                   type="text"
                   placeholder="e.g. Stark Industries"
@@ -201,7 +201,7 @@ export default function Dashboard() {
                   onChange={e => setNewOrgName(e.target.value)}
                   disabled={creating}
                 />
-                <button type="submit" disabled={creating || !newOrgName.trim()} className="btn-primary">
+                <button type="submit" disabled={creating || !newOrgName.trim()} className="btn-primary w-full sm:w-auto">
                   {creating ? "Creating..." : "Create"}
                 </button>
               </form>

@@ -31,6 +31,10 @@ const router = express.Router();
 // Get user's organizations
 router.get("/", requireAuth(), getOrganizations);
 
+// Invites Management (Must be before /:orgId to avoid wildcard interception)
+router.get("/my-invites", requireAuth(), getMyInvites);
+router.post("/invites/:inviteId/respond", requireAuth(), respondToInvite);
+
 // Get specific organization details
 router.get("/:orgId", requireAuth(), requireRole("VIEWER"), getOrganization);
 
@@ -42,10 +46,6 @@ router.put("/:orgId", requireAuth(), requireRole("ADMIN"), updateOrganization);
 
 // Delete Organization (Requires OWNER role)
 router.delete("/:orgId", requireAuth(), requireRole("OWNER"), deleteOrganization);
-
-// Invites Management
-router.get("/my-invites", requireAuth(), getMyInvites);
-router.post("/invites/:inviteId/respond", requireAuth(), respondToInvite);
 
 // Invite User (Requires ADMIN role in the target org)
 router.post("/:orgId/invites", requireAuth(), requireRole("ADMIN"), inviteUser);
@@ -63,17 +63,17 @@ router.put("/:orgId/members/:userId/role", requireAuth(), requireRole("ADMIN"), 
 router.put("/:orgId/members/:userId/exception", requireAuth(), requireRole("ADMIN"), toggleMemberException);
 
 // Activity and Tasks
-router.get("/:orgId/activity", requireAuth(), requireRole("ADMIN"), getOrganizationActivity);
+router.get("/:orgId/activity", requireAuth(), requireRole("MEMBER"), getOrganizationActivity);
 router.get("/:orgId/tasks", requireAuth(), requireRole("VIEWER"), getUserTasks);
 router.get("/:orgId/invites", requireAuth(), requireRole("ADMIN"), getOrgInvites);
 
 // Notices
-router.post("/:orgId/notices", requireAuth(), requireRole(["ADMIN", "OWNER", "MANAGER"]), createNotice);
+router.post("/:orgId/notices", requireAuth(), requireRole("MANAGER"), createNotice);
 router.get("/:orgId/notices", requireAuth(), getNotices);
-router.delete("/:orgId/notices/:noticeId", requireAuth(), requireRole(["ADMIN", "OWNER", "MANAGER"]), deleteNotice);
+router.delete("/:orgId/notices/:noticeId", requireAuth(), requireRole("MANAGER"), deleteNotice);
 
 // Join Requests
-router.get("/:orgId/join-requests", requireAuth(), requireRole(["ADMIN", "OWNER"]), getJoinRequests);
-router.put("/:orgId/join-requests/:requestId", requireAuth(), requireRole(["ADMIN", "OWNER"]), respondToJoinRequest);
+router.get("/:orgId/join-requests", requireAuth(), requireRole("ADMIN"), getJoinRequests);
+router.put("/:orgId/join-requests/:requestId", requireAuth(), requireRole("ADMIN"), respondToJoinRequest);
 
 export default router;
