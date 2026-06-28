@@ -39,6 +39,14 @@ WorkSphere is built on a highly decoupled, modern JavaScript ecosystem designed 
    * Just-In-Time (JIT) Clerk Identity Synchronization.
    * Multi-Workspace Exception overrides & Approval flows.
 
+5. 💾 **[Database Architecture](database.md)**
+   * PostgreSQL relational schema layouts.
+   * MongoDB unstructured collections.
+
+6. 📡 **[API & WebSockets](api.md)**
+   * REST endpoints breakdown.
+   * WebSocket Event Dictionary.
+
 ---
 
 *Return to the [Main Project README](../README.md)*

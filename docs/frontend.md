@@ -1,56 +1,47 @@
-# 🎨 Frontend Architecture Deep Dive
+# 🎨 Frontend Architecture
 
-The frontend of WorkSphere is an advanced Single Page Application (SPA) structured to handle complex states, real-time syncs, and large DOM manipulations without blocking the main thread.
+The frontend is a React 19 Single Page Application built with Vite, Tailwind CSS, and TanStack React Query.
 
-## Context Wrapping Topology
+## 1. Context Wrapping Topology
 
-To prevent prop-drilling and ensure strict separation of concerns, the `<App />` root wraps the router in a specific hierarchical order of Context Providers:
+The `main.jsx` and `App.jsx` entry points are structured as a series of context providers, ensuring global state and utilities are seamlessly injected throughout the component tree.
 
-1.  **`<QueryClientProvider>`**: Outermost layer. Ensures the caching engine is available to all components immediately.
-2.  **`<ToastProvider>`**: UI layer. Allows any deep component to trigger generic success/error toasts without relying on local state.
-3.  **`<SocketProvider>`**: Infrastructure layer. Initializes the `socket.io-client` connection.
-4.  **`<RefreshProvider>`**: Acts as a global bus to trigger manual refetches of queries when automated invalidation is insufficient.
-5.  **`<Routes>`**: The React Router v7 configuration.
+**Provider Order:**
+1. `<ClerkProvider>`: Outermost wrapper injecting global authentication state.
+2. `<BrowserRouter>`: Injects client-side routing.
+3. `<QueryClientProvider>`: Mounts the TanStack cache globally.
+4. `<ToastProvider>` / `<ConfirmProvider>`: Mounts global UI overlays.
+5. `<SocketProvider>`: Establishes the real-time WebSocket connection to the backend.
+6. `<RefreshProvider>`: Exposes a global utility to force UI refreshes for edge-case desyncs.
 
-## TanStack Query Caching Strategy
+## 2. Server State vs. Local State (React Query)
 
-WorkSphere abandons traditional global state stores (like Redux) in favor of treating the Backend as the single source of truth.
+WorkSphere strictly delineates **Server State** (data living in Postgres/Mongo) from **Local UI State** (dropdowns, tabs, drag-and-drop shadows).
 
-**Configuration (`src/App.jsx`):**
-```javascript
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 5 * 60 * 1000, // 5 minutes
-      retry: 1,
-      refetchOnWindowFocus: false,
-    },
-  },
-});
-```
+### Caching Strategy (`@tanstack/react-query`)
+*   Data is fetched via `useQuery` hooks.
+*   **Stale Time Strategy:** We explicitly prevent local components from caching API payloads into `useState`. Instead, we rely entirely on the Query Cache. Stale times vary depending on data velocity.
+*   **Mutation Invalidation:** When a user creates a task, the `onSuccess` callback of the `useMutation` hook automatically invalidates the query key (e.g., `["project", projectId]`). This triggers an automatic background refetch, replacing the DOM seamlessly without "cascading renders".
 
-**Why this matters:**
-*   `staleTime: 5 * 60 * 1000`: We prevent the UI from spamming the backend with redundant `GET` requests if the user navigates between a Kanban board and the Settings page within a 5-minute window.
-*   `refetchOnWindowFocus: false`: In a collaborative workspace, tab-switching is frequent. Disabling this prevents aggressive, unnecessary network traffic.
-*   *Real-time override*: If a Socket.io event arrives (e.g., `TASK_UPDATED`), the frontend manually calls `queryClient.invalidateQueries({ queryKey: ['tasks'] })`, instantly overriding the `staleTime` and fetching fresh data only when mathematically proven necessary.
+## 3. Real-Time UI Hydration
 
-## Kanban Engine & Atomic UI Rendering
+The `SocketProvider` acts as the bridge between the backend Socket.io server and the frontend Query Cache.
 
-The Kanban board utilizes `@hello-pangea/dnd`. 
+**The Workflow:**
+1. User A modifies a task in Project X.
+2. The Backend commits to Postgres and emits `TASK_UPDATED` to the `project_X` room.
+3. User B's `SocketProvider` receives the event.
+4. User B's client executes `queryClient.invalidateQueries(["project", "X"])`.
+5. User B's Kanban board seamlessly repaints with the latest Postgres state.
 
-**The Rendering Flow:**
-1.  **State Initialization:** The server provides the list of tasks.
-2.  **Drag Operation:** When a user drags a card, the state updates *locally* first (Optimistic UI) to ensure 60fps animations.
-3.  **Synchronization:** A `PATCH` request is dispatched to `/api/projects/:projectId/tasks/:taskId/status`.
-4.  **Reconciliation:** If the request fails, the local state rolls back. If successful, the server emits a socket event to update all other connected clients seamlessly.
+> [!TIP]
+> This "Event -> Invalidation" pattern is far superior to manually patching the React Query cache via socket payloads, as it guarantees the client always converges on the absolute truth of the database.
 
-## Routing Abstractions
+## 4. Atomic UI and Layout Abstractions
 
-WorkSphere employs a Layout-based routing protection strategy.
-*   The `<SidebarLayout />` wraps all routes starting with `/org/:orgId`.
-*   This acts as an authorization boundary. If a user attempts to access `/org/123/boards` but the context cannot verify their membership in `org 123`, the layout immediately ejects them to the `<Dashboard />`, preventing rendering of unauthorized data.
+*   **Routing Layouts:** Complex authenticated pages (like the Kanban board, Chat, and Docs) are wrapped inside a `<SidebarLayout>` component, which manages the navigation shell while passing `children` into the main viewport.
+*   **Kanban Engine:** We utilize `@hello-pangea/dnd` for fluid Drag-and-Drop functionality in the `ProjectView.jsx`. Optimistic UI updates handle the immediate visual drag, while the `useMutation` syncs the status to the backend.
 
 ---
-👉 **Next:** Read about the [Backend Architecture](backend.md)
 
 *Return to [Index](index.md)*

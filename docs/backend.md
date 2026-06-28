@@ -2,7 +2,7 @@
 
 The backend is built to guarantee ACID compliance for core relational entities while maintaining non-blocking, asynchronous throughput for high-volume unstructured logs.
 
-## Express Middleware Pipeline
+## 1. Express Middleware Pipeline
 
 Every incoming request traverses a strict security and parsing pipeline before reaching business logic:
 1.  **`cors`**: Validates the origin against the `CLIENT_URL` configurations to prevent unauthorized cross-origin requests.
@@ -10,26 +10,31 @@ Every incoming request traverses a strict security and parsing pipeline before r
 3.  **`express-rate-limit`**: Mitigates DDOS and brute-force attempts on API endpoints.
 4.  **`compression()`**: Gzip compresses outgoing streams to reduce payload sizes and improve latency.
 5.  **`@clerk/express` Auth Middleware**: Extracts the Bearer token, validates the JWT cryptographically, and populates the request context with `req.auth.userId`.
+6.  **`requireAuth()` (Custom)**: Implements our JIT (Just-In-Time) PostgreSQL synchronization cache.
+7.  **`requireRole()` / `requireProjectRole()`**: Our custom RBAC middleware interceptors to block unauthorized mutations at the network edge.
 
-## ACID Compliance via Prisma Transactions
+## 2. ACID Compliance via Prisma Transactions
 
-Complex operations, such as creating a task and immediately assigning multiple users to it, cannot afford partial failures (e.g., the task is created but the assignees are not mapped).
+Complex operations, such as creating a project or updating task status, cannot afford partial failures (e.g., the project is created but the default channel is not).
 
-**Implementation Pattern (`createTask` in `task.controller.js`):**
+**Implementation Pattern (`createProject` in `project.controller.js`):**
 ```javascript
-const task = await prisma.$transaction(async (tx) => {
-  const newTask = await tx.task.create({ data: { title, projectId } });
+const project = await prisma.$transaction(async (tx) => {
+  // 1. Create Project
+  const newProject = await tx.project.create({ ... });
   
-  if (assigneeIds.length > 0) {
-    // Write assignees. If this fails, the task creation rolls back automatically.
-    await tx.taskAssignee.createMany({ ... });
-  }
-  return newTask;
+  // 2. Map Members
+  await tx.projectMember.createMany({ ... });
+  
+  // 3. Init General Channel
+  await tx.channel.create({ ... });
+  
+  return newProject;
 });
 ```
-This `prisma.$transaction` block ensures that if any part of the logic fails (e.g., attempting to assign an invalid `userId`), the initial `task.create` is rolled back at the database level instantly, preventing corrupted or orphaned rows from entering the PostgreSQL tables.
+This `prisma.$transaction` block ensures that if any part of the logic fails (e.g., attempting to assign an invalid `userId`), the initial `project.create` is rolled back at the database level instantly, preventing corrupted or orphaned rows from entering PostgreSQL.
 
-## Fire-and-Forget MongoDB Audit Service
+## 3. Fire-and-Forget MongoDB Audit Service
 
 To prevent logging mechanisms from artificially slowing down the REST endpoints, the `auditService.log()` function is designed as a non-blocking, fire-and-forget Promise.
 
@@ -48,10 +53,12 @@ export const auditService = {
 ```
 Because `ActivityLog` is stored in MongoDB, inserting thousands of logs per minute will not fragment the PostgreSQL indexes. This design ensures that the core relational CRUD performance is fully insulated from the heavy I/O of the audit pipeline.
 
-## Centralized Error Handling
+## 4. Centralized Error Handling
 
 Controllers are completely devoid of repetitive `res.status(500)` boilerplate blocks. Every controller wraps its logic in a clean `try/catch` block and simply invokes `next(error)`.
-The Express global error handler catches the thrown object, sanitizes the stack trace in `production` environments to prevent code structure leakage, and outputs a uniform JSON error payload back to the client.
+
+The Express global error handler (`index.js`) catches the thrown object, sanitizes the stack trace in `production` environments to prevent code structure leakage, and outputs a uniform JSON error payload back to the client.
 
 ---
+
 *Return to [Index](index.md)*
