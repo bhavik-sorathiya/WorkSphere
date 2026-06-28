@@ -53,12 +53,12 @@ function App() {
               {/* ─── AUTH GATEWAY ─── */}
               <Route path="/sign-in/*" element={
                 <AuthLayout>
-                  <SignIn routing="path" path="/sign-in" signUpUrl="/sign-up" fallbackRedirectUrl="/home" />
+                  <SignIn routing="path" path="/sign-in" signUpUrl="/sign-up" fallbackRedirectUrl="/" />
                 </AuthLayout>
               } />
               <Route path="/sign-up/*" element={
                 <AuthLayout>
-                  <SignUp routing="path" path="/sign-up" signInUrl="/sign-in" fallbackRedirectUrl="/home" />
+                  <SignUp routing="path" path="/sign-up" signInUrl="/sign-in" fallbackRedirectUrl="/" />
                 </AuthLayout>
               } />
 

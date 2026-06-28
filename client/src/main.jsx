@@ -31,8 +31,8 @@ function ClerkProviderWithTheme({ children }) {
       publishableKey={PUBLISHABLE_KEY}
       signInUrl="/sign-in"
       signUpUrl="/sign-up"
-      signInFallbackRedirectUrl="/home"
-      signUpFallbackRedirectUrl="/home"
+      signInFallbackRedirectUrl="/"
+      signUpFallbackRedirectUrl="/"
       afterSignOutUrl="/"
       appearance={{
         baseTheme: isDark ? dark : undefined,
