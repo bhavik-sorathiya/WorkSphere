@@ -34,6 +34,11 @@ WorkSphere is built on a highly decoupled, modern JavaScript ecosystem designed 
    * Fire-and-Forget MongoDB Audit Service (`ActivityLog`).
    * Centralized Error Handling architecture.
 
+4. 🔐 **[RBAC & Multi-Workspace Logic](rbac.md)**
+   * Dual-Layer Topology (Org vs. Project roles).
+   * Just-In-Time (JIT) Clerk Identity Synchronization.
+   * Multi-Workspace Exception overrides & Approval flows.
+
 ---
 
 *Return to the [Main Project README](../README.md)*
